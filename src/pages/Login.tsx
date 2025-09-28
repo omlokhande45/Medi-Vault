@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MediVaultLogo } from "@/components/MediVaultLogo";
 import { UserCheck, Stethoscope, ArrowLeft } from "lucide-react";
+import { PatientLoginForm } from "@/components/forms/PatientLoginForm";
+import { DoctorLoginForm } from "@/components/forms/DoctorLoginForm";
 
 const Login = () => {
   const [userType, setUserType] = useState<"patient" | "doctor" | null>(null);
+  const navigate = useNavigate();
 
   if (!userType) {
     return (
@@ -90,19 +93,11 @@ const Login = () => {
             </p>
           </CardHeader>
           <CardContent>
-            <div className="bg-primary-soft p-6 rounded-lg text-center">
-              <h3 className="text-lg font-semibold text-primary mb-3">
-                Backend Integration Required
-              </h3>
-              <p className="text-muted-foreground mb-4">
-                To implement secure user authentication and login functionality, 
-                this project needs to be connected to Supabase.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Supabase will provide secure user authentication, password management, 
-                and session handling for both patients and healthcare providers.
-              </p>
-            </div>
+            {userType === "patient" ? (
+              <PatientLoginForm onSuccess={() => navigate("/dashboard")} />
+            ) : (
+              <DoctorLoginForm onSuccess={() => navigate("/dashboard")} />
+            )}
 
             <div className="text-center pt-6">
               <p className="text-muted-foreground">

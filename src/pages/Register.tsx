@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MediVaultLogo } from "@/components/MediVaultLogo";
 import { UserCheck, Stethoscope, ArrowLeft } from "lucide-react";
+import { PatientRegistrationForm } from "@/components/forms/PatientRegistrationForm";
+import { DoctorRegistrationForm } from "@/components/forms/DoctorRegistrationForm";
 
 const Register = () => {
   const [userType, setUserType] = useState<"patient" | "doctor" | null>(null);
+  const navigate = useNavigate();
 
   if (!userType) {
     return (
@@ -90,19 +93,11 @@ const Register = () => {
             </p>
           </CardHeader>
           <CardContent>
-            <div className="bg-primary-soft p-6 rounded-lg text-center">
-              <h3 className="text-lg font-semibold text-primary mb-3">
-                Backend Integration Required
-              </h3>
-              <p className="text-muted-foreground mb-4">
-                To implement secure user registration, authentication, and database storage, 
-                this project needs to be connected to Supabase.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Features like user accounts, medical record storage, QR code generation, 
-                file uploads, and AI assistance require a backend database and authentication system.
-              </p>
-            </div>
+            {userType === "patient" ? (
+              <PatientRegistrationForm onSuccess={() => navigate("/dashboard")} />
+            ) : (
+              <DoctorRegistrationForm onSuccess={() => navigate("/dashboard")} />
+            )}
 
             <div className="text-center pt-6">
               <p className="text-muted-foreground">
